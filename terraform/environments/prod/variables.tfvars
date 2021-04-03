@@ -1,0 +1,5 @@
+location="westus"
+rg_name="rg-multienv-demo-prod"
+storage_account_name="strmultienvprod"
+index_document="index.html"
+source_content="<h1>This is static content coming from the prod environment</h1>"
