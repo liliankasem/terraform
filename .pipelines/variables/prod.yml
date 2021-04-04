@@ -1,0 +1,13 @@
+# Prod Terraform Backend Environment Variables
+
+variables:
+- name: environment
+  value: 'prod'
+
+- name: suffix
+  value: '01'
+
+- name: subscriptionId
+  value: '471c3172-215c-4465-9229-f07e1bdc7049'
+
+- template: common.yml

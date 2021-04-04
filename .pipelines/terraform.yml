@@ -1,0 +1,53 @@
+trigger: none
+
+pr: none
+
+variables:
+- name: artifactName
+  value: terraform
+- name: devEnvironment
+  value: dev
+- name: devServiceConnection
+  value: az-sub-thunderbolt
+- name: prodEnvironment
+  value: prod
+- name: prodServiceConnection
+  value: az-sub-thunderbolt
+
+stages:
+- stage: Builds
+  displayName: 'Publish Terraform Artifacts'
+  jobs:
+  - job: Build
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+    - task: CopyFiles@2
+      displayName: 'Copy terraform directory'
+      inputs:
+        sourceFolder: 'terraform'
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      artifact: $(artifactName)
+
+- stage: Dev
+  displayName: 'DEV Deployment'
+  variables:
+    - template: variables/dev.yml
+  jobs:
+    - template: templates/terraform-backend.yml
+      parameters:
+        artifactName: $(artifactName)
+        environment: $(devEnvironment)
+        serviceConnection: $(devServiceConnection)
+
+- stage: Prod
+  displayName: 'Prod Deployment'
+  variables:
+    - template: variables/prod.yml
+  jobs:
+    - template: templates/terraform-backend.yml
+      parameters:
+        artifactName: $(artifactName)
+        environment: $(prodEnvironment)
+        serviceConnection: $(prodServiceConnection)

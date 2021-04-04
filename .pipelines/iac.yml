@@ -1,0 +1,47 @@
+trigger: none
+
+pr: none
+
+variables:
+- name: artifactName
+  value: terraform
+- name: devEnvironment
+  value: dev
+- name: prodEnvironment
+  value: prod
+
+stages:
+- stage: Build
+  displayName: 'Publish Terraform Artifacts'
+  jobs:
+  - job: Build
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+    - task: CopyFiles@2
+      displayName: 'Copy terraform directory'
+      inputs:
+        sourceFolder: 'terraform'
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      artifact: $(artifactName)
+
+- stage: Dev
+  displayName: 'DEV Deployment'
+  variables:
+    - group: kv-terraform-dev
+  jobs:
+    - template: templates/iac.yml
+      parameters:
+        artifactName: $(artifactName)
+        environment: $(devEnvironment)
+
+- stage: Prod
+  displayName: 'Prod Deployment'
+  variables:
+    - group: kv-terraform-prod
+  jobs:
+    - template: templates/iac.yml
+      parameters:
+        artifactName: $(artifactName)
+        environment: $(prodEnvironment)
