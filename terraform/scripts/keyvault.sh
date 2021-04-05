@@ -25,7 +25,7 @@ createKeyVault() {
                       --location $RESOURCE_LOCATION \
                       --name $KEY_VAULT_NAME
 
-  echo -e "\n${GREEN}Key Vault Created:  ${RESET}$STORAGE_ACCOUNT_NAME"
+  echo -e "\n${GREEN}Key Vault Created:  ${RESET}$KEY_VAULT_NAME"
 }
 
 # Check Arguments

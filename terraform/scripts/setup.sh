@@ -53,7 +53,7 @@ do
 done
 
 deployAzureResources() {
-  # Login to Azure if running localling. In Azure DevOps, use the Az CLI task with a service connection
+  # Login to Azure if running locally. In Azure DevOps, use the Az CLI task with a service connection
   if [ $ENVIRONMENT = 'local' ]; then
     az login
     az account set --subscription=$SUBSCRIPTION_ID
@@ -157,8 +157,8 @@ start() {
       deployAzureResources
   else
     if [ $ENVIRONMENT = 'local' ]; then
-      echo -e "\n$(tput bold)Azure $ENVIRONMENT resources already exist, do you want to write the existing values to the environment/.local folder and setup terraform?${RESET}"
-      echo "${YELLOW}Warning: This will override any values that already exist in the terraform/enironment/.local folder.${RESET}"
+      echo -e "\n$(tput bold)Azure $ENVIRONMENT resources already exist, do you want to write the terraform backend resource values to the environments/.local folder and setup terraform?${RESET}"
+      echo "${YELLOW}Warning: This will override any values that already exist in the environments/.local folder.${RESET}"
       select yn in "Yes" "No"; do
           case $yn in
               Yes ) createLocalEnvironment; break;;
