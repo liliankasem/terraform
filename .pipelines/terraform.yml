@@ -8,11 +8,11 @@ variables:
 - name: devEnvironment
   value: dev
 - name: devServiceConnection
-  value: az-sub-thunderbolt
+  value: #TODO: Fill in dev environment Azure DevOps service connection name
 - name: prodEnvironment
   value: prod
 - name: prodServiceConnection
-  value: az-sub-thunderbolt
+  value: #TODO: Fill in prod environment Azure DevOps service connection name
 
 stages:
 - stage: Builds
@@ -31,7 +31,7 @@ stages:
       artifact: $(artifactName)
 
 - stage: Dev
-  displayName: 'DEV Deployment'
+  displayName: 'Dev Deployment'
   variables:
     - template: variables/dev.yml
   jobs:

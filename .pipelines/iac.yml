@@ -27,7 +27,7 @@ stages:
       artifact: $(artifactName)
 
 - stage: Dev
-  displayName: 'DEV Deployment'
+  displayName: 'Dev Deployment'
   variables:
     - group: kv-terraform-dev
   jobs:

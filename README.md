@@ -1,8 +1,8 @@
 # Terraform Environment Setup Sample
 
 The aim of this repository is to demonstrate how developers on a team can setup their own local terraform environment for
-development purposes automatically without impacting dev and prod variables used in pipelines, and how to setup dev and prod environments using Azure DevOps Pipelines. This sample is primarily
-focused on Azure.
+development purposes automatically without impacting dev and prod variables used in pipelines, and how to setup dev and prod
+environments using Azure DevOps Pipelines. This sample is primarily focused on Azure.
 
 ## Prerequisites
 
@@ -25,8 +25,10 @@ focused on Azure.
 
 ### DevOps
 
-1. Create an [Azure Resource Manager service connection](https://docs.microsoft.com/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml)
+1. Create an [Azure Resource Manager Service Connection](https://docs.microsoft.com/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml)
    for Azure DevOps (requires a service principal)
+     - You might need multiple service connections for all of your environments/subscriptions
+1. Configure the `.pipelines/terraform.yml` file with the names of the service connection you created
 1. Configure `.pipelines/variables/` files with terraform backend resource names and Azure subscription Id
 1. Create the terraform backend
    - You can do this through a pipeline or run the setup script locally.
