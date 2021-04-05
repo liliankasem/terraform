@@ -69,7 +69,9 @@ environments using Azure DevOps Pipelines. This sample is primarily focused on A
 
 ## The Script
 
-The aim is to have a local configuration available to run terraform with one script.
+The aim of the setup script is to allow you to create your terraform environments in (ideally) one step, both locally and in DevOps pipelines.
+A manual step is required when we start using Azure DevOps due to insuficiant permissions on the service principal, you can get around this by
+making your Azure DevOps service principal an Owner with AAD permisions (not recommended).
 
 - Checks if the terraform backend resource group already exists:
   - If no, the script will [start deploying the Azure resources](#deploy-azure-resources) required for the terraform backend
