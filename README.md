@@ -43,6 +43,8 @@ environments using Azure DevOps Pipelines. This sample is primarily focused on A
       1. Create and run the terraform backend pipeline (`.pipelines/terraform.yml`)
           - When this pipeline runs the setup script, it intentionally passes the `--skip-sp` flag as the service principal
             cannot be created from the pipeline due to insufficient permissions.
+          - If you do want to run the full script in Azure pipelines (including the service principal creation) without any manual
+            steps, you can follow this [guide on how to add AAD permissions to your Azure DevOps service principal](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/guides/service_principal_configuration#azure-active-directory-permissions).
       1. Run the `service_principal.sh` script locally to create a service principal for Terraform
 
         > Run these steps for each environment, such as `dev` and `prod`
