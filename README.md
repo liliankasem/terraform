@@ -25,6 +25,8 @@ environments using Azure DevOps Pipelines. This sample is primarily focused on A
 
 ### DevOps
 
+[Example Azure DevOps project](https://dev.azure.com/liliankasem/Terraform%20Sample/_build).
+
 1. Create an [Azure Resource Manager Service Connection](https://docs.microsoft.com/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml)
    for Azure DevOps (requires a service principal)
      - You might need multiple service connections for all of your environments/subscriptions
