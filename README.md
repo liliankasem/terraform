@@ -96,3 +96,10 @@ making your Azure DevOps service principal an Owner with AAD permisions (not rec
 1. Reads the terraform backend storage account values from key vault and writes them into `backend.config`
 1. Runs `terraform init` using the created backend (`backend.config`)
 1. Copies the dev variables from `terraform/environments/dev/variables.tfvars` to `terraform/environments/.local/variables.tfvars`
+
+## Acknowledgements
+
+A thank you to these folks for providing great content that helped me shape this repo!
+
+- [Julie Ng](https://github.com/julie-ng): [Terraform on Azure Pipelines Best Practice](https://julie.io/writing/terraform-on-azure-pipelines-best-practices/)
+- [Bhargav Bachina](https://github.com/bbachi): [Terraform Azure Multi-Environment](https://github.com/bbachi/terraform-azure-multi-environments)
