@@ -1,0 +1,5 @@
+location="westus"
+rg_name="rg-multienv-demo-dev"
+storage_account_name="strmultienvdev"
+index_document="index.html"
+source_content="<h1>This is static content coming from the dev environment</h1>"

@@ -1,0 +1,53 @@
+trigger: none
+
+pr: none
+
+variables:
+- name: artifactName
+  value: terraform
+- name: devEnvironment
+  value: dev
+- name: devServiceConnection
+  value: #TODO: Fill in dev environment Azure DevOps service connection name
+- name: prodEnvironment
+  value: prod
+- name: prodServiceConnection
+  value: #TODO: Fill in prod environment Azure DevOps service connection name
+
+stages:
+- stage: Builds
+  displayName: 'Publish Terraform Artifacts'
+  jobs:
+  - job: Build
+    pool:
+      vmImage: ubuntu-18.04
+    steps:
+    - task: CopyFiles@2
+      displayName: 'Copy terraform directory'
+      inputs:
+        sourceFolder: 'terraform'
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      artifact: $(artifactName)
+
+- stage: Dev
+  displayName: 'Dev Deployment'
+  variables:
+    - template: variables/dev.yml
+  jobs:
+    - template: templates/terraform-backend.yml
+      parameters:
+        artifactName: $(artifactName)
+        environment: $(devEnvironment)
+        serviceConnection: $(devServiceConnection)
+
+- stage: Prod
+  displayName: 'Prod Deployment'
+  variables:
+    - template: variables/prod.yml
+  jobs:
+    - template: templates/terraform-backend.yml
+      parameters:
+        artifactName: $(artifactName)
+        environment: $(prodEnvironment)
+        serviceConnection: $(prodServiceConnection)

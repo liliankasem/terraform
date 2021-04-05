@@ -1,0 +1,52 @@
+# Terraform Project IaC Pipeline Template
+
+parameters:
+- name: artifactName
+  type: string
+- name: environment
+  type: string
+
+jobs:
+- deployment: deploy_terraform_resources
+  displayName: Deploy Terraform Resources
+  pool:
+    vmImage: ubuntu-18.04
+  environment: ${{ parameters.environment }}
+  variables:
+    deploymentMode: 'Incremental'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - download: current
+          artifact: ${{ parameters.artifactName }}
+
+        - task: TerraformInstaller@0
+          displayName: Terraform Install
+          inputs:
+            terraformVersion: '0.14.9'
+
+        # Variables from kv-terraform variable group
+        - bash: |
+            terraform init \
+              -backend-config="storage_account_name=$(kv-tf-state-blob-account)" \
+              -backend-config="container_name=$(kv-tf-state-blob-container)" \
+              -backend-config="key=$(kv-tf-state-blob-file)" \
+              -backend-config="access_key=$(kv-tf-state-blob-access-key)"
+          displayName: Terraform Init
+          workingDirectory: $(Pipeline.Workspace)/${{ parameters.artifactName }}
+
+        - bash: |
+            terraform plan \
+              -var-file=$(Pipeline.Workspace)/${{ parameters.artifactName }}/environments/${{ parameters.environment }}/variables.tfvars \
+              -var="subscription_id=$(kv-arm-subscription-id)" \
+              -var="client_id=$(kv-arm-client-id)" \
+              -var="client_secret=$(kv-arm-client-secret)" \
+              -var="tenant_id=$(kv-arm-tenant-id)" \
+              -out=deployment.tfplan
+          displayName: Terraform Plan
+          workingDirectory: $(Pipeline.Workspace)/${{ parameters.artifactName }}
+
+        - bash: terraform apply -auto-approve deployment.tfplan
+          displayName: Terraform Apply
+          workingDirectory: $(Pipeline.Workspace)/${{ parameters.artifactName }}

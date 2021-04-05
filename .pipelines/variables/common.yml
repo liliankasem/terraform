@@ -1,0 +1,11 @@
+# Common Variables
+
+variables:
+  projectName: 'tfstarter'
+
+  resourceGroupName: 'rg-$(projectName)-tf-backend-$(environment)-$(suffix)'
+  resourceGroupLocation: 'westus'
+
+  keyVaultName: 'kv-$(projectName)-$(environment)-$(suffix)'
+  storageAccountName: 'st$(projectName)$(environment)$(suffix)'
+  storageAccountContainerName: 'terraform-backend'

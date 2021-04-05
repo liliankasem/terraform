@@ -1,0 +1,45 @@
+# Terraform Backend Pipeline Template
+
+parameters:
+- name: artifactName
+  type: string
+- name: environment
+  type: string
+- name: serviceConnection
+  type: string
+
+jobs:
+- deployment: deploy_terraform_backend
+  displayName: Deploy Terraform Backend
+  pool:
+    vmImage: ubuntu-18.04
+  environment: ${{ parameters.environment }}
+  variables:
+    deploymentMode: 'Incremental'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - download: current
+          artifact: ${{ parameters.artifactName }}
+
+        # Variables from dev/prod variable template
+        - task: AzureCLI@2
+          displayName: Create Terraform Backend
+          inputs:
+            azureSubscription: ${{ parameters.serviceConnection }}
+            scriptType: 'bash'
+            scriptLocation: 'scriptPath'
+            scriptPath: '$(Pipeline.Workspace)/${{ parameters.artifactName }}/scripts/setup.sh'
+            arguments: '-e $(environment)
+                        -a $(subscriptionId)
+                        -p $(projectName)
+                        -r $(resourceGroupName)
+                        -l $(resourceGroupLocation)
+                        -k $(keyVaultName)
+                        -s $(storageAccountName)
+                        -c $(storageAccountContainerName)
+                        -d $(Pipeline.Workspace)/${{ parameters.artifactName }}
+                        --skip-sp'
+            addSpnToEnvironment: true
+            failOnStandardError: true

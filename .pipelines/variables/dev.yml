@@ -1,0 +1,13 @@
+# Dev Terraform Backend Environment Variables
+
+variables:
+- name: environment
+  value: 'dev'
+
+- name: suffix
+  value: '01'
+
+- name: subscriptionId
+  value: '#TODO: Fill in subscription Id'
+
+- template: common.yml
